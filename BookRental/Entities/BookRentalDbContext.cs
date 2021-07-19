@@ -6,7 +6,7 @@ namespace BookRental.Entities
 
     {
         private string _connectionString =
-            "Server=(localdb)\\mssqllocaldb;Database=TicTacToeDb;Trusted_Connection=True;";
+            "Server=(localdb)\\mssqllocaldb;Database=BookRentalDb;Trusted_Connection=True;";
 
         public DbSet<Book> Books { get; set; }
 
