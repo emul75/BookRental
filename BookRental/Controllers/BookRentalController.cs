@@ -20,7 +20,7 @@ namespace BookRental.Controllers
         //add, delete, edit, rent, return
 
         [HttpGet]
-        public ActionResult<Book> Get(string id)
+        public ActionResult<Book> GetById(int id)
         {
             return Ok();
         }
@@ -31,28 +31,35 @@ namespace BookRental.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public ActionResult Add(Book book)
+        {
+            return Ok();
+        }
+
+        [HttpPut]
+        public ActionResult Update()
+        {
+            return Ok();
+        }
+
         [HttpDelete]
         public ActionResult Delete()
         {
             return Ok();
         }
 
-        [HttpPost]
-        public ActionResult Update()
-        {
-            
-        }
 
         [HttpPost("rent")]
         public ActionResult Rent()
         {
-            
+            return Ok();
         }
 
         [HttpPost("return")]
         public ActionResult Return()
         {
-            
+            return Ok();
         }
     }
 }
