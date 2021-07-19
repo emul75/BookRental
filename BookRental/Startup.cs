@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookRental.Entities;
+using BookRental.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +26,8 @@ namespace BookRental
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<BookRentalDbContext>();
+            services.AddScoped<IBookRentalService, BookRentalService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

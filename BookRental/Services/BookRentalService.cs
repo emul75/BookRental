@@ -5,7 +5,18 @@ using BookRental.Entities;
 
 namespace BookRental.Services
 {
-    public class BookRentalService
+    public interface IBookRentalService
+    {
+        Book GetById(int id);
+        IEnumerable<Book> GetAll();
+        int Add(Book book);
+        void Update(Book updateBook, int id);
+        void Delete(int id);
+        void Rent(int id, string name);
+        void Return(int id);
+    }
+
+    public class BookRentalService : IBookRentalService
     {
         private readonly BookRentalDbContext _dbContext;
 
