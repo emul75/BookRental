@@ -16,3 +16,84 @@ function loadBookListView() {
         }
     });
 }
+
+function loadAddBookView() {
+    $.ajax({
+        url: "/api/book/add",
+        type: "GET",
+        success: function (data) {
+            document.getElementById("mainView").innerHTML = data;
+        },
+        error: function (error) {
+            alert(error.responseText);
+            console.log(error);
+        }
+    });
+}
+
+function AddBook() {
+    let newBook = {
+        Title: document.getElementById("title-input").value,
+        Author: document.getElementById("author-input").value,
+        Category: document.getElementById("category-input").value,
+        DatePublished: document.getElementById("date-input").value
+    }
+    $.ajax({
+        url: "/api/book/add",
+        type: "POST",
+        data: newBook,
+        success: function () {
+            loadBookListView();
+        },
+        error: function (error) {
+            alert(error.responseText);
+            console.log(error);
+        }
+    });
+}
+
+function deleteBook(id) {
+    $.ajax({
+        url: "/api/book",
+        type: "DELETE",
+        data: {id: id},
+        success: function (data) {
+            loadBookListView()
+        },
+        error: function (error) {
+            alert(error.responseText);
+            console.log(error);
+        }
+    });
+}
+
+function loadAddClientView() {
+    $.ajax({
+        url: "/api/client/add",
+        type: "GET",
+        success: function (data) {
+            document.getElementById("mainView").innerHTML = data;
+        },
+        error: function (error) {
+            alert(error.responseText);
+            console.log(error);
+        }
+    });
+}
+
+function AddClient() {
+    let newClient = {
+    }
+    $.ajax({
+        url: "/api/client/add",
+        type: "POST",
+        data: newClient,
+        success: function () {
+            loadBookListView();
+        },
+        error: function (error) {
+            alert(error.responseText);
+            console.log(error);
+        }
+    });
+}

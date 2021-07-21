@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace BookRental.Models
+﻿namespace BookRental.Models
 {
-    public class BookDto
+    public class BookForListDto
     {
         public string Title { get; set; }
         public string Author { get; set; }
         public string Category { get; set; }
         public string DatePublished { get; set; }
+        public bool Available { get; set; }
     }
 }

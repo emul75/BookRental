@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace BookRental.Controllers
 {
     [Controller]
-    [Route("api/book")]
+    [Route("api/book/")]
     public class BookRentalController : Controller
     {
         private readonly ILogger<BookRentalController> _logger;
@@ -34,8 +34,14 @@ namespace BookRental.Controllers
             return PartialView("_BookList", books);
         }
 
-        [HttpPost]
-        public ActionResult Add(AddBookDto dto)
+        [HttpGet("add")]
+        public ActionResult Add()
+        {
+            return PartialView("_AddBook");
+        }
+        
+        [HttpPost("add")]
+        public ActionResult Add(BookDto dto)
         {
             _service.Add(dto);
             return Ok();

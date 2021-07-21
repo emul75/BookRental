@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using BookRental.Entities;
 using BookRental.Models;
@@ -10,7 +11,7 @@ namespace BookRental.Services
     {
         Book GetById(int id);
         IEnumerable<Book> GetAll();
-        void Add(AddBookDto book);
+        void Add(BookDto book);
         void Update(Book updatedBook, int id);
         void Delete(int id);
         void Rent(int bookId, int clienId);
@@ -43,9 +44,16 @@ namespace BookRental.Services
             return books;
         }
 
-        public void Add(AddBookDto book)
+        public void Add(BookDto book)
         {
-            _dbContext.Add(book);
+            var newBook = new Book()
+            {
+                Title = book.Title,
+                Author = book.Author,
+                Category = book.Category,
+                Published = DateTime.ParseExact(book.DatePublished, "d/M/yyyy", CultureInfo.InvariantCulture)
+            };
+            _dbContext.Add(newBook);
             _dbContext.SaveChanges();
         }
 

@@ -1,9 +1,9 @@
 @using BookRental.Entities
-@model IEnumerable<BookRental.Entities.Book>;
+@model IEnumerable<Book>;
 
 <div>
-    <button type="button" class="btn btn-primary btn-lg">Add new book</button>
-    <button type="button" class="btn btn-primary btn-lg">Add new client</button>
+    <button type="button" class="btn btn-primary btn-lg" onclick="loadAddBookView()">Add new book</button>
+    <button type="button" class="btn btn-primary btn-lg" onclick="loadAddNewClientView()">Add new client</button>
 
 </div>
 
@@ -12,10 +12,27 @@
         @foreach (var book in Model)
         {
             <li class="list-group-item">
-                 Title @book.Title
-                Author @book.Author
-                Published @book.Published.ToString("dd MMMM yyyy")
+                <div>
+                    <div class="text-left">
+                        Title: @book.Title
 
+                    </div>
+                    <div class="text-left">
+
+                        Author: @book.Author
+
+                    </div>
+                    <div class="text-left">
+
+                        Published: @book.Published.ToString("dd MMMM yyyy")
+                    </div>
+                    <div class="btn">
+                        <button type="button" class="btn btn-primary" onclick="">Update</button>
+                        <button type="button" class="btn btn-primary" onclick="deleteBook(@book.Id)">Delete</button>
+                    </div>
+                    <button type="button" class="btn btn-info" onclick="">Rent/Return</button>
+
+                </div>
             </li>
         }
 
