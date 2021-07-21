@@ -11,9 +11,9 @@ namespace BookRental.Services
         Book GetById(int id);
         IEnumerable<Book> GetAll();
         void Add(AddBookDto book);
-        void Update(Book updateBook, int id);
+        void Update(Book updatedBook, int id);
         void Delete(int id);
-        void Rent(int id, string name);
+        void Rent(int bookId, int clienId);
         void Return(int id);
     }
 
@@ -49,7 +49,7 @@ namespace BookRental.Services
             _dbContext.SaveChanges();
         }
 
-        public void Update(Book updateBook, int id)
+        public void Update(Book updatedBook, int id)
         {
             var book = _dbContext.Books.FirstOrDefault(b => b.Id == id);
             if (book is null)
@@ -57,7 +57,7 @@ namespace BookRental.Services
                 throw new Exception("Book not found");
             }
 
-            book = updateBook;
+            book = updatedBook;
             _dbContext.SaveChanges();
         }
 
@@ -73,17 +73,9 @@ namespace BookRental.Services
             _dbContext.SaveChanges();
         }
 
-        public void Rent(int id, string name)
+        public void Rent(int bookId, int clienId)
         {
-            var book = _dbContext.Books.FirstOrDefault(b => b.Id == id);
-            if (book is null)
-            {
-                throw new Exception("Book not found");
-            }
             
-
-
-            _dbContext.SaveChanges();
         }
 
         public void Return(int id)

@@ -57,9 +57,9 @@ namespace BookRental.Controllers
 
 
         [HttpPost("rent")]
-        public ActionResult Rent(int id, string name)
+        public ActionResult Rent(int bookId, int clienId)
         {
-            _service.Rent(id, name);
+            _service.Rent(bookId, clienId);
             return Ok();
         }
 
