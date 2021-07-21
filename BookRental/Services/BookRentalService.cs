@@ -82,8 +82,7 @@ namespace BookRental.Services
             }
             
 
-            book.ClientName = name;
-            book.Rented = DateTime.Now;
+
             _dbContext.SaveChanges();
         }
 
@@ -97,7 +96,7 @@ namespace BookRental.Services
 
 
 
-            book.Returned = DateTime.Now;
+
             _dbContext.SaveChanges();
         }
     }
