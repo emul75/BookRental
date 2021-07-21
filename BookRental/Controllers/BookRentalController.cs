@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BookRental.Entities;
+using BookRental.Models;
 using BookRental.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,13 +13,11 @@ namespace BookRental.Controllers
     {
         private readonly ILogger<BookRentalController> _logger;
         private readonly IBookRentalService _service;
-        private readonly BookRentalDbContext _dbContext;
 
-        public BookRentalController(ILogger<BookRentalController> logger,IBookRentalService service, BookRentalDbContext dbContext)
+        public BookRentalController(ILogger<BookRentalController> logger,IBookRentalService service)
         {
             _logger = logger;
             _service = service;
-            _dbContext = dbContext;
         }
 
         [HttpGet]
@@ -36,13 +35,13 @@ namespace BookRental.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(Book book)
+        public ActionResult Add(AddBookDto dto)
         {
-            _service.Add(book);
+            _service.Add(dto);
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut]///
         public ActionResult Update(Book book, int id)
         {
             _service.Update(book, id);

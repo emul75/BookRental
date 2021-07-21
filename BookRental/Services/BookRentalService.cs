@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BookRental.Entities;
+using BookRental.Models;
 
 namespace BookRental.Services
 {
@@ -9,7 +10,7 @@ namespace BookRental.Services
     {
         Book GetById(int id);
         IEnumerable<Book> GetAll();
-        int Add(Book book);
+        void Add(AddBookDto book);
         void Update(Book updateBook, int id);
         void Delete(int id);
         void Rent(int id, string name);
@@ -42,11 +43,10 @@ namespace BookRental.Services
             return books;
         }
 
-        public int Add(Book book)
+        public void Add(AddBookDto book)
         {
             _dbContext.Add(book);
             _dbContext.SaveChanges();
-            return book.Id;
         }
 
         public void Update(Book updateBook, int id)
@@ -80,13 +80,8 @@ namespace BookRental.Services
             {
                 throw new Exception("Book not found");
             }
+            
 
-            if (book.RentalStatus is true)
-            {
-                throw new Exception("Book already rented");
-            }
-
-            book.RentalStatus = true;
             book.ClientName = name;
             book.Rented = DateTime.Now;
             _dbContext.SaveChanges();
@@ -100,12 +95,8 @@ namespace BookRental.Services
                 throw new Exception("Book not found");
             }
 
-            if (book.RentalStatus is false)
-            {
-                throw new Exception("Book is not rented");
-            }
 
-            book.RentalStatus = false;
+
             book.Returned = DateTime.Now;
             _dbContext.SaveChanges();
         }

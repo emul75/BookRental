@@ -12,7 +12,5 @@ namespace BookRental.Entities
         public DateTime Published { get; set; }
         public DateTime Rented { get; set; }
         public DateTime Returned { get; set; }
-        public bool RentalStatus { get; set; }
-        
     }
 }
