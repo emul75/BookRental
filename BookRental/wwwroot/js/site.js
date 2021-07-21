@@ -67,7 +67,7 @@ function deleteBook(id) {
     });
 }
 
-function loadAddClientView() {
+function loadAddNewClientView() {
     $.ajax({
         url: "/api/client/add",
         type: "GET",
@@ -83,6 +83,9 @@ function loadAddClientView() {
 
 function AddClient() {
     let newClient = {
+        FirstName: document.getElementById("firstname-input").value,
+        LastName: document.getElementById("lastname-input").value,
+        ContactNumber: document.getElementById("contact-number-input").value
     }
     $.ajax({
         url: "/api/client/add",

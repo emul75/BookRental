@@ -1,4 +1,6 @@
-﻿using BookRental.Entities;
+﻿using System;
+using System.Linq;
+using BookRental.Entities;
 
 namespace BookRental.Services
 {
@@ -18,6 +20,10 @@ namespace BookRental.Services
 
         public void Add(Client client)
         {
+            if (_dbContext.Clients.Any(c => c.ContactNumber == client.ContactNumber))
+            {
+                throw new Exception("Client with this number already exist");
+            }
             _dbContext.Clients.Add(client);
             _dbContext.SaveChanges();
         }
