@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace BookRental.Controllers
 {
     [Controller]
-    [Route("api/book/")]
+    [Route("api/book")]
     public class BookRentalController : Controller
     {
         private readonly ILogger<BookRentalController> _logger;

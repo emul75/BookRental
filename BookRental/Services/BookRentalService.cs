@@ -53,7 +53,7 @@ namespace BookRental.Services
                 Category = book.Category,
                 Published = DateTime.ParseExact(book.DatePublished, "d/M/yyyy", CultureInfo.InvariantCulture)
             };
-            _dbContext.Add(newBook);
+            _dbContext.Books.Add(newBook);
             _dbContext.SaveChanges();
         }
 

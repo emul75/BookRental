@@ -28,6 +28,7 @@ namespace BookRental
             services.AddControllersWithViews();
             services.AddDbContext<BookRentalDbContext>();
             services.AddScoped<IBookRentalService, BookRentalService>();
+            services.AddScoped<IClientService, ClientService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
