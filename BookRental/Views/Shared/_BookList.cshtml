@@ -1,0 +1,23 @@
+@using BookRental.Entities
+@model IEnumerable<BookRental.Entities.Book>;
+
+<div>
+    <button type="button" class="btn btn-primary btn-lg">Add new book</button>
+    <button type="button" class="btn btn-primary btn-lg">Add new client</button>
+
+</div>
+
+<div>
+    <ul class="list-group">
+        @foreach (var book in Model)
+        {
+            <li class="list-group-item">
+                 Title @book.Title
+                Author @book.Author
+                Published @book.Published.ToString("dd MMMM yyyy")
+
+            </li>
+        }
+
+    </ul>
+</div>
