@@ -36,7 +36,7 @@ function AddBook() {
         Title: document.getElementById("title-input").value,
         Author: document.getElementById("author-input").value,
         Category: document.getElementById("category-input").value,
-        DatePublished: document.getElementById("date-input").value
+        Published: document.getElementById("date-input").value
     }
     $.ajax({
         url: "/api/book/add",
@@ -91,6 +91,43 @@ function AddClient() {
         url: "/api/client/add",
         type: "POST",
         data: newClient,
+        success: function () {
+            loadBookListView();
+        },
+        error: function (error) {
+            alert(error.responseText);
+            console.log(error);
+        }
+    });
+}
+
+function loadUpdateBookView(id) {
+    $.ajax({
+        url: "/api/book/update",
+        type: "GET",
+        data: {id:id},
+        success: function (data) {
+            document.getElementById("mainView").innerHTML = data;
+        },
+        error: function (error) {
+            alert(error.responseText);
+            console.log(error);
+        }
+    });
+}
+
+function UpdateBook(id) {
+    let updatedBook = {
+        Id: id,
+        Title: document.getElementById("title-input").value,
+        Author: document.getElementById("author-input").value,
+        Category: document.getElementById("category-input").value,
+        Published: document.getElementById("date-input").value
+    }
+    $.ajax({
+        url: "/api/book/update",
+        type: "POST",
+        data: updatedBook,
         success: function () {
             loadBookListView();
         },

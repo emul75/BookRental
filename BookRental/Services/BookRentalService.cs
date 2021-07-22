@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using BookRental.Entities;
 using BookRental.Models;
+using Microsoft.JSInterop.Infrastructure;
 
 namespace BookRental.Services
 {
@@ -11,8 +12,8 @@ namespace BookRental.Services
     {
         Book GetById(int id);
         IEnumerable<Book> GetAll();
-        void Add(BookDto book);
-        void Update(Book updatedBook, int id);
+        void Add(BookDto dto);
+        void Update(UpdatedBookDto dto);
         void Delete(int id);
         void Rent(int bookId, int clienId);
         void Return(int id);
@@ -44,28 +45,39 @@ namespace BookRental.Services
             return books;
         }
 
-        public void Add(BookDto book)
+        public void Add(BookDto dto)
         {
             var newBook = new Book()
             {
-                Title = book.Title,
-                Author = book.Author,
-                Category = book.Category,
-                Published = DateTime.ParseExact(book.DatePublished, "d/M/yyyy", CultureInfo.InvariantCulture)
+                Title = dto.Title,
+                Author = dto.Author,
+                Category = dto.Category,
+                Published = DateTime.ParseExact(dto.DatePublished, "d/M/yyyy", CultureInfo.InvariantCulture)
             };
             _dbContext.Books.Add(newBook);
             _dbContext.SaveChanges();
         }
 
-        public void Update(Book updatedBook, int id)
+        public void Update(UpdatedBookDto dto)
         {
-            var book = _dbContext.Books.FirstOrDefault(b => b.Id == id);
+            var book = _dbContext.Books.FirstOrDefault(b => b.Id == dto.Id);
             if (book is null)
             {
                 throw new Exception("Book not found");
             }
+            
+            if (dto.Title is not null)
+                book.Title = dto.Title;
+            if (dto.Author is not null)
+                book.Author = dto.Author;
+            if (dto.Category is not null)
+                book.Category = dto.Category;
+            if (dto.Published is not null)
+            {
+                book.Published = DateTime.ParseExact(dto.Published, "d/M/yyyy", CultureInfo.InvariantCulture);
 
-            book = updatedBook;
+            }
+            
             _dbContext.SaveChanges();
         }
 

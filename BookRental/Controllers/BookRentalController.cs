@@ -47,10 +47,18 @@ namespace BookRental.Controllers
             return Ok();
         }
 
-        [HttpPut]///
-        public ActionResult Update(Book book, int id)
+        [HttpGet("Update")]
+        public ActionResult Update(int id)
         {
-            _service.Update(book, id);
+            var book = _service.GetById(id);
+            return PartialView("_UpdateBook", book);
+        }
+        
+        
+        [HttpPost("Update")]
+        public ActionResult Update(UpdatedBookDto dto)
+        {
+            _service.Update(dto);
             return Ok();
         }
 
