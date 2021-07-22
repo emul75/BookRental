@@ -52,7 +52,7 @@ namespace BookRental.Services
                 Title = dto.Title,
                 Author = dto.Author,
                 Category = dto.Category,
-                Published = DateTime.ParseExact(dto.DatePublished, "d/M/yyyy", CultureInfo.InvariantCulture)
+                Published = DateTime.ParseExact(dto.Published, "d/M/yyyy", CultureInfo.InvariantCulture)
             };
             _dbContext.Books.Add(newBook);
             _dbContext.SaveChanges();
