@@ -20,7 +20,7 @@ namespace BookRental.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("{id:int}")]
         public ActionResult<Book> GetById(int id)
         {
             var book = _service.GetById(id);
@@ -47,7 +47,7 @@ namespace BookRental.Controllers
             return Ok();
         }
 
-        [HttpGet("update")]
+        [HttpGet("update/{id:int}")]
         public ActionResult Update(int id)
         {
             var book = _service.GetById(id);
@@ -62,7 +62,7 @@ namespace BookRental.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
             _service.Delete(id);

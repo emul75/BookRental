@@ -88,6 +88,11 @@ namespace BookRental.Services
                 throw new Exception("Book not found");
             }
 
+            if (_dbContext.Rents.Any(r => r.Book.Id == id && r.Returned == null))
+            {
+                throw new Exception("Book is currently rented");
+            }
+
             _dbContext.Remove(book);
             _dbContext.SaveChanges();
         }

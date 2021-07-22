@@ -54,9 +54,8 @@ function addBook() {
 
 function deleteBook(id) {
     $.ajax({
-        url: "/api/book",
+        url: "/api/book/" + id,
         type: "DELETE",
-        data: {id: id},
         success: function (data) {
             loadBookListView()
         },
@@ -103,9 +102,8 @@ function addClient() {
 
 function loadUpdateBookView(id) {
     $.ajax({
-        url: "/api/book/update",
+        url: "/api/book/update/"+id,
         type: "GET",
-        data: {id: id},
         success: function (data) {
             document.getElementById("mainView").innerHTML = data;
         },
