@@ -1,10 +1,16 @@
-﻿namespace BookRental.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BookRental.Models
 {
     public class UpdatedBookDto
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Author { get; set; }
+        [Required]
+        public int Id { get; set; }        
+        [MaxLength(30)]
+        public string Title { get; set; } 
+        [MaxLength(30)]
+        public string Author { get; set; } 
+        [MaxLength(20)]
         public string Category { get; set; }
         public string Published { get; set; }
     }

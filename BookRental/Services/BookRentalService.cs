@@ -11,7 +11,7 @@ namespace BookRental.Services
     {
         Book GetById(int id);
         IEnumerable<Book> GetAll();
-        void Add(BookDto dto);
+        void Add(AddBookDto dto);
         void Update(UpdatedBookDto dto);
         void Delete(int id);
         void Rent(RentOrReturnBookDto dto);
@@ -45,7 +45,7 @@ namespace BookRental.Services
             return books;
         }
 
-        public void Add(BookDto dto)
+        public void Add(AddBookDto dto)
         {
             var newBook = new Book()
             {

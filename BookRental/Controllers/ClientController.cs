@@ -1,4 +1,5 @@
 ﻿using BookRental.Entities;
+using BookRental.Models;
 using BookRental.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,9 +26,13 @@ namespace BookRental.Controllers
         }
         
         [HttpPost("add")]
-        public ActionResult Add(Client client)
+        public ActionResult Add(AddClientDto dto)
         {
-            _service.Add(client);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _service.Add(dto);
             return Ok();
         }
 

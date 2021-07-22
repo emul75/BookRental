@@ -41,8 +41,12 @@ namespace BookRental.Controllers
         }
 
         [HttpPost("add")]
-        public ActionResult Add(BookDto dto)
+        public ActionResult Add(AddBookDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             _service.Add(dto);
             return Ok();
         }
@@ -58,6 +62,10 @@ namespace BookRental.Controllers
         [HttpPost("update")]
         public ActionResult Update(UpdatedBookDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             _service.Update(dto);
             return Ok();
         }
@@ -88,6 +96,10 @@ namespace BookRental.Controllers
         [HttpPost("rent")]
         public ActionResult Rent(RentOrReturnBookDto dto)
         {
+            if (ModelState.IsValid!)
+            {
+                return BadRequest(ModelState);
+            }
             _service.Rent(dto);
             return Ok();
         }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
 using BookRental.Entities;
+using BookRental.Models;
 
 namespace BookRental.Services
 {
     public interface IClientService
     {
-        void Add(Client client);
+        void Add(AddClientDto dto);
     }
 
     public class ClientService : IClientService
@@ -18,13 +19,21 @@ namespace BookRental.Services
             _dbContext = dbContext;
         }
 
-        public void Add(Client client)
+        public void Add(AddClientDto dto)
         {
-            if (_dbContext.Clients.Any(c => c.ContactNumber == client.ContactNumber))
+            if (_dbContext.Clients.Any(c => c.ContactNumber == dto.ContactNumber))
             {
                 throw new Exception("Client with this number already exist");
             }
-            _dbContext.Clients.Add(client);
+
+            var newClient = new Client()
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                ContactNumber = dto.ContactNumber
+            };
+            
+            _dbContext.Clients.Add(newClient);
             _dbContext.SaveChanges();
         }
     }
