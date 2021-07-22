@@ -32,8 +32,9 @@ namespace BookRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _service.Add(dto);
-            return Ok();
+            var result = _service.Add(dto);
+
+            return result ? Ok() : BadRequest("Client with this number already exist.");
         }
 
 

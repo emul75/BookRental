@@ -7,7 +7,7 @@ namespace BookRental.Services
 {
     public interface IClientService
     {
-        void Add(AddClientDto dto);
+        bool Add(AddClientDto dto);
     }
 
     public class ClientService : IClientService
@@ -19,11 +19,11 @@ namespace BookRental.Services
             _dbContext = dbContext;
         }
 
-        public void Add(AddClientDto dto)
+        public bool Add(AddClientDto dto)
         {
             if (_dbContext.Clients.Any(c => c.ContactNumber == dto.ContactNumber))
             {
-                throw new Exception("Client with this number already exist");
+                return false;
             }
 
             var newClient = new Client()
@@ -35,6 +35,7 @@ namespace BookRental.Services
             
             _dbContext.Clients.Add(newClient);
             _dbContext.SaveChanges();
+            return true;
         }
     }
 }
