@@ -1,0 +1,21 @@
+@model BookRental.Entities.Book
+
+<div>
+    <div class="text-left">
+        Title: @Model.Title
+    </div>
+    <div class="text-left">
+        Author: @Model.Author
+    </div>
+    <div class="text-left">
+        Category: @Model.Category
+    </div>
+    <div class="text-left">
+        Published: @Model.Published.ToString("dd MMMM yyyy")
+        <br>
+    </div>
+</div>
+
+<button type="button" class="btn btn-primary btn-lg" onclick="loadBookListView()">Back to the list</button>
+
+<button type="button" class="btn btn-success btn-lg" onclick="returnBook(@Model.Id)">Return this book</button>

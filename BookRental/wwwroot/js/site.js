@@ -176,7 +176,7 @@ function returnBook(id) {
     $.ajax({
         url: "/api/book/return",
         type: "POST",
-        data: {id: id},
+        data: {Id: id},
         success: function () {
             loadBookListView()
         },

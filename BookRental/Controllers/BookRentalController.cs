@@ -86,7 +86,7 @@ namespace BookRental.Controllers
         }
 
         [HttpPost("rent")]
-        public ActionResult Rent(RentBookDto dto)
+        public ActionResult Rent(RentOrReturnBookDto dto)
         {
             _service.Rent(dto);
             return Ok();
@@ -94,9 +94,9 @@ namespace BookRental.Controllers
 
 
         [HttpPost("return")]
-        public ActionResult Return()
+        public ActionResult Return(int id)
         {
-            //_service.Return(id);
+            _service.Return(id);
             return Ok();
         }
     }

@@ -25,6 +25,9 @@
                     <div class="text-left">
                         Published: @book.Published.ToString("dd MMMM yyyy")
                     </div>
+                    <div class="text-left">
+                        Id: @book.Id
+                    </div>
                     <div class="btn">
                         <button type="button" class="btn btn-primary" onclick="loadUpdateBookView(@book.Id)">Update</button>
                         <button type="button" class="btn btn-primary" onclick="deleteBook(@book.Id)">Delete</button>

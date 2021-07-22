@@ -2,7 +2,7 @@
 
 namespace BookRental.Models
 {
-    public class RentBookDto
+    public class RentOrReturnBookDto
     {
         public int Id { get; set; }
         public string ContactNumber { get; set; }

@@ -14,7 +14,7 @@ namespace BookRental.Services
         void Add(BookDto dto);
         void Update(UpdatedBookDto dto);
         void Delete(int id);
-        void Rent(RentBookDto dto);
+        void Rent(RentOrReturnBookDto dto);
         void Return(int id);
         bool IsRented(int id);
     }
@@ -92,7 +92,7 @@ namespace BookRental.Services
             _dbContext.SaveChanges();
         }
 
-        public void Rent(RentBookDto dto)
+        public void Rent(RentOrReturnBookDto dto)
         {
             var rent = new Rent()
             {
@@ -107,15 +107,14 @@ namespace BookRental.Services
 
         public void Return(int id)
         {
-            var rent = _dbContext.Rents.First(r => r.BookId == id);
+            var rent = _dbContext.Rents.First(r => r.BookId == id && r.Returned == null);
             rent.Returned = DateTime.Now;
             _dbContext.SaveChanges();
         }
 
         public bool IsRented(int id)
         {
-            var rent = _dbContext.Rents.FirstOrDefault(r => r.Book.Id == id);
-            return rent?.Returned != null;
+            return _dbContext.Rents.Any(r => r.Book.Id == id && r.Returned == null);
         }
     }
 }
