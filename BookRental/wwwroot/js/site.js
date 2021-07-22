@@ -31,7 +31,7 @@ function loadAddBookView() {
     });
 }
 
-function AddBook() {
+function addBook() {
     let newBook = {
         Title: document.getElementById("title-input").value,
         Author: document.getElementById("author-input").value,
@@ -81,7 +81,7 @@ function loadAddNewClientView() {
     });
 }
 
-function AddClient() {
+function addClient() {
     let newClient = {
         FirstName: document.getElementById("firstname-input").value,
         LastName: document.getElementById("lastname-input").value,
@@ -105,7 +105,7 @@ function loadUpdateBookView(id) {
     $.ajax({
         url: "/api/book/update",
         type: "GET",
-        data: {id:id},
+        data: {id: id},
         success: function (data) {
             document.getElementById("mainView").innerHTML = data;
         },
@@ -116,7 +116,7 @@ function loadUpdateBookView(id) {
     });
 }
 
-function UpdateBook(id) {
+function updateBook(id) {
     let updatedBook = {
         Id: id,
         Title: document.getElementById("title-input").value,
@@ -130,6 +130,69 @@ function UpdateBook(id) {
         data: updatedBook,
         success: function () {
             loadBookListView();
+        },
+        error: function (error) {
+            alert(error.responseText);
+            console.log(error);
+        }
+    });
+}
+
+function loadRentBookView(id) {
+    $.ajax({
+        url: "/api/book/rent",
+        type: "GET",
+        data: {id: id},
+        success: function (data) {
+            document.getElementById("mainView").innerHTML = data;
+        },
+        error: function (error) {
+            alert(error.responseText);
+            console.log(error);
+        }
+    });
+}
+
+function rentBook(id) {
+    $.ajax({
+        url: "/api/book/rent",
+        type: "POST",
+        data: {
+            id: id,
+            ContactNumber: document.getElementById("contact-number-input").value
+        },
+        success: function () {
+            loadBookListView()
+        },
+        error: function (error) {
+            alert(error.responseText);
+            console.log(error);
+        }
+    });
+}
+
+function loadReturnBookView(id) {
+    $.ajax({
+        url: "/api/book/return",
+        type: "GET",
+        data: {id: id},
+        success: function (data) {
+            document.getElementById("mainView").innerHTML = data;
+        },
+        error: function (error) {
+            alert(error.responseText);
+            console.log(error);
+        }
+    });
+}
+
+function returnBook(id) {
+    $.ajax({
+        url: "/api/book/return",
+        type: "POST",
+        data: {id: id},
+        success: function () {
+            loadBookListView()
         },
         error: function (error) {
             alert(error.responseText);

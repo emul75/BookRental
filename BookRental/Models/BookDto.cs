@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BookRental.Models
+﻿namespace BookRental.Models
 {
     public class BookDto
     {

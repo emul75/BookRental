@@ -47,7 +47,7 @@ namespace BookRental.Controllers
             return Ok();
         }
 
-        [HttpGet("Update")]
+        [HttpGet("update")]
         public ActionResult Update(int id)
         {
             var book = _service.GetById(id);
@@ -55,7 +55,7 @@ namespace BookRental.Controllers
         }
         
         
-        [HttpPost("Update")]
+        [HttpPost("update")]
         public ActionResult Update(UpdatedBookDto dto)
         {
             _service.Update(dto);
@@ -69,6 +69,12 @@ namespace BookRental.Controllers
             return Ok();
         }
 
+        [HttpGet("rent")]
+        public ActionResult Rent(int id)
+        {
+            var book = _service.GetById(id);
+            return PartialView("_RentBook", book);
+        }
 
         [HttpPost("rent")]
         public ActionResult Rent(int bookId, int clienId)
@@ -76,7 +82,14 @@ namespace BookRental.Controllers
             _service.Rent(bookId, clienId);
             return Ok();
         }
-
+        
+        [HttpGet("return")]
+        public ActionResult Return(int id)
+        {
+            var book = _service.GetById(id);
+            return PartialView("_RentBook", book);
+        }
+        
         [HttpPost("return")]
         public ActionResult Return(int id)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BookRental.Entities
 {
@@ -9,5 +10,7 @@ namespace BookRental.Entities
         public virtual Client Client { get; set; }
         public int BookId { get; set; }
         public virtual Book Book { get; set; }
+        public DateTime? Rented { get; set; }
+        public DateTime? Returned { get; set; }
     }
 }

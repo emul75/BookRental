@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using BookRental.Entities;
 using BookRental.Models;
-using Microsoft.JSInterop.Infrastructure;
 
 namespace BookRental.Services
 {
@@ -110,6 +109,11 @@ namespace BookRental.Services
 
 
             _dbContext.SaveChanges();
+        }
+
+        public bool IsRented(int id)
+        {
+            _dbContext.Rents.Any(r=>r.Book.Id == id && r.)
         }
     }
 }

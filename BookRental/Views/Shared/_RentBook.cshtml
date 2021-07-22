@@ -1,0 +1,28 @@
+@model BookRental.Entities.Book
+
+<div>
+    <div class="text-left">
+        Title: @Model.Title
+    </div>
+    <div class="text-left">
+        Author: @Model.Author
+    </div>
+    <div class="text-left">
+        Category: @Model.Category
+    </div>
+    <div class="text-left">
+        Published: @Model.Published.ToString("dd MMMM yyyy")
+        <br>
+    </div>
+</div>
+
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Contact number</span>
+    </div>
+    <input type="text" class="form-control" aria-describedby="basic-addon1" id="contact-number-input">
+</div>
+
+<button type="button" class="btn btn-primary btn-lg" onclick="loadBookListView()">Back to the list</button>
+
+<button type="button" class="btn btn-success btn-lg" onclick="rentBook(@Model.Id)">Rent this book</button>
