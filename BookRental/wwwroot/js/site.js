@@ -138,9 +138,9 @@ function updateBook(id) {
     });
 }
 
-function loadRentBookView(id) {
+function loadRentOrReturnBookView(id) {
     $.ajax({
-        url: "/api/book/rent",
+        url: "/api/book/rentorreturn",
         type: "GET",
         data: {id: id},
         success: function (data) {
@@ -158,7 +158,7 @@ function rentBook(id) {
         url: "/api/book/rent",
         type: "POST",
         data: {
-            id: id,
+            Id: id,
             ContactNumber: document.getElementById("contact-number-input").value
         },
         success: function () {
@@ -171,20 +171,6 @@ function rentBook(id) {
     });
 }
 
-function loadReturnBookView(id) {
-    $.ajax({
-        url: "/api/book/return",
-        type: "GET",
-        data: {id: id},
-        success: function (data) {
-            document.getElementById("mainView").innerHTML = data;
-        },
-        error: function (error) {
-            alert(error.responseText);
-            console.log(error);
-        }
-    });
-}
 
 function returnBook(id) {
     $.ajax({

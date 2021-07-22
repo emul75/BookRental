@@ -14,7 +14,7 @@ namespace BookRental.Controllers
         private readonly ILogger<BookRentalController> _logger;
         private readonly IBookRentalService _service;
 
-        public BookRentalController(ILogger<BookRentalController> logger,IBookRentalService service)
+        public BookRentalController(ILogger<BookRentalController> logger, IBookRentalService service)
         {
             _logger = logger;
             _service = service;
@@ -39,7 +39,7 @@ namespace BookRental.Controllers
         {
             return PartialView("_AddBook");
         }
-        
+
         [HttpPost("add")]
         public ActionResult Add(BookDto dto)
         {
@@ -53,8 +53,8 @@ namespace BookRental.Controllers
             var book = _service.GetById(id);
             return PartialView("_UpdateBook", book);
         }
-        
-        
+
+
         [HttpPost("update")]
         public ActionResult Update(UpdatedBookDto dto)
         {
@@ -69,31 +69,34 @@ namespace BookRental.Controllers
             return Ok();
         }
 
-        [HttpGet("rent")]
-        public ActionResult Rent(int id)
+        [HttpGet("rentorreturn")]
+        public ActionResult RentOrReturn(int id)
         {
             var book = _service.GetById(id);
-            return PartialView("_RentBook", book);
+
+            if (_service.IsRented(id))
+            {
+                return PartialView("_ReturnBook", book);
+            }
+            else
+            {
+                return PartialView("_RentBook", book);
+
+            }
         }
 
         [HttpPost("rent")]
-        public ActionResult Rent(int bookId, int clienId)
+        public ActionResult Rent(RentBookDto dto)
         {
-            _service.Rent(bookId, clienId);
+            _service.Rent(dto);
             return Ok();
         }
-        
-        [HttpGet("return")]
-        public ActionResult Return(int id)
-        {
-            var book = _service.GetById(id);
-            return PartialView("_RentBook", book);
-        }
-        
+
+
         [HttpPost("return")]
-        public ActionResult Return(int id)
+        public ActionResult Return()
         {
-            _service.Return(id);
+            //_service.Return(id);
             return Ok();
         }
     }

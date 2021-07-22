@@ -14,8 +14,9 @@ namespace BookRental.Services
         void Add(BookDto dto);
         void Update(UpdatedBookDto dto);
         void Delete(int id);
-        void Rent(int bookId, int clienId);
+        void Rent(RentBookDto dto);
         void Return(int id);
+        bool IsRented(int id);
     }
 
     public class BookRentalService : IBookRentalService
@@ -64,7 +65,7 @@ namespace BookRental.Services
             {
                 throw new Exception("Book not found");
             }
-            
+
             if (dto.Title is not null)
                 book.Title = dto.Title;
             if (dto.Author is not null)
@@ -74,9 +75,8 @@ namespace BookRental.Services
             if (dto.Published is not null)
             {
                 book.Published = DateTime.ParseExact(dto.Published, "d/M/yyyy", CultureInfo.InvariantCulture);
-
             }
-            
+
             _dbContext.SaveChanges();
         }
 
@@ -92,28 +92,30 @@ namespace BookRental.Services
             _dbContext.SaveChanges();
         }
 
-        public void Rent(int bookId, int clienId)
+        public void Rent(RentBookDto dto)
         {
-            
+            var rent = new Rent()
+            {
+                Book = _dbContext.Books.First(b => b.Id == dto.Id),
+                Client = _dbContext.Clients.First(c => c.ContactNumber == dto.ContactNumber),
+                Rented = DateTime.Now,
+                Returned = null
+            };
+            _dbContext.Rents.Add(rent);
+            _dbContext.SaveChanges();
         }
 
         public void Return(int id)
         {
-            var book = _dbContext.Books.FirstOrDefault(b => b.Id == id);
-            if (book is null)
-            {
-                throw new Exception("Book not found");
-            }
-
-
-
-
+            var rent = _dbContext.Rents.First(r => r.BookId == id);
+            rent.Returned = DateTime.Now;
             _dbContext.SaveChanges();
         }
 
         public bool IsRented(int id)
         {
-            _dbContext.Rents.Any(r=>r.Book.Id == id && r.)
+            var rent = _dbContext.Rents.FirstOrDefault(r => r.Book.Id == id);
+            return rent?.Returned != null;
         }
     }
 }
