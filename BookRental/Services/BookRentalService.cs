@@ -11,10 +11,10 @@ namespace BookRental.Services
     {
         Book GetById(int id);
         IEnumerable<Book> GetAll();
-        void Add(AddBookDto dto);
-        void Update(UpdatedBookDto dto);
-        void Delete(int id);
-        void Rent(RentOrReturnBookDto dto);
+        bool Add(AddBookDto dto);
+        bool Update(UpdatedBookDto dto);
+        bool Delete(int id);
+        bool Rent(RentOrReturnBookDto dto);
         void Return(int id);
         bool IsRented(int id);
     }
@@ -31,11 +31,6 @@ namespace BookRental.Services
         public Book GetById(int id)
         {
             var book = _dbContext.Books.FirstOrDefault(b => b.Id == id);
-            if (book is null)
-            {
-                throw new Exception("Book not found");
-            }
-
             return book;
         }
 
@@ -45,25 +40,35 @@ namespace BookRental.Services
             return books;
         }
 
-        public void Add(AddBookDto dto)
+        public bool Add(AddBookDto dto)
         {
             var newBook = new Book()
             {
                 Title = dto.Title,
                 Author = dto.Author,
                 Category = dto.Category,
-                Published = DateTime.ParseExact(dto.Published, "d/M/yyyy", CultureInfo.InvariantCulture)
             };
+            try
+            {
+                newBook.Published = DateTime.ParseExact(dto.Published, "d/M/yyyy", CultureInfo.InvariantCulture);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+
             _dbContext.Books.Add(newBook);
             _dbContext.SaveChanges();
+            return true;
         }
 
-        public void Update(UpdatedBookDto dto)
+        public bool Update(UpdatedBookDto dto)
         {
             var book = _dbContext.Books.FirstOrDefault(b => b.Id == dto.Id);
             if (book is null)
             {
-                throw new Exception("Book not found");
+                return false;
             }
 
             if (dto.Title is not null)
@@ -74,40 +79,55 @@ namespace BookRental.Services
                 book.Category = dto.Category;
             if (dto.Published is not null)
             {
-                book.Published = DateTime.ParseExact(dto.Published, "d/M/yyyy", CultureInfo.InvariantCulture);
+                try
+                {
+                    book.Published = DateTime.ParseExact(dto.Published, "d/M/yyyy", CultureInfo.InvariantCulture);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
 
             _dbContext.SaveChanges();
+            return true;
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             var book = _dbContext.Books.FirstOrDefault(b => b.Id == id);
             if (book is null)
             {
-                throw new Exception("Book not found");
+                return false;
             }
 
             if (_dbContext.Rents.Any(r => r.Book.Id == id && r.Returned == null))
             {
-                throw new Exception("Book is currently rented");
+                return false;
             }
 
             _dbContext.Remove(book);
             _dbContext.SaveChanges();
+            return true;
         }
 
-        public void Rent(RentOrReturnBookDto dto)
+        public bool Rent(RentOrReturnBookDto dto)
         {
+            var client = _dbContext.Clients.FirstOrDefault(c => c.ContactNumber == dto.ContactNumber);
+            if (client is null)
+            {
+                return false;
+            }
             var rent = new Rent()
             {
                 Book = _dbContext.Books.First(b => b.Id == dto.Id),
-                Client = _dbContext.Clients.First(c => c.ContactNumber == dto.ContactNumber),
+                Client = client,
                 Rented = DateTime.Now,
                 Returned = null
             };
             _dbContext.Rents.Add(rent);
             _dbContext.SaveChanges();
+            return true;
         }
 
         public void Return(int id)

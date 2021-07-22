@@ -24,6 +24,11 @@ namespace BookRental.Controllers
         public ActionResult<Book> GetById(int id)
         {
             var book = _service.GetById(id);
+            if (book is null)
+            {
+                return BadRequest("Book not found");
+            }
+
             return Ok(book);
         }
 
@@ -47,8 +52,10 @@ namespace BookRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _service.Add(dto);
-            return Ok();
+
+            bool result = _service.Add(dto);
+
+            return result ? Ok() : BadRequest("Invalid date format");
         }
 
         [HttpGet("update/{id:int}")]
@@ -57,8 +64,7 @@ namespace BookRental.Controllers
             var book = _service.GetById(id);
             return PartialView("_UpdateBook", book);
         }
-
-
+        
         [HttpPost("update")]
         public ActionResult Update(UpdatedBookDto dto)
         {
@@ -66,15 +72,18 @@ namespace BookRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _service.Update(dto);
-            return Ok();
+
+            bool result = _service.Update(dto);
+
+            return result ? Ok() : BadRequest("Invalid date format");
         }
 
         [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
-            _service.Delete(id);
-            return Ok();
+            bool result = _service.Delete(id);
+
+            return result ? Ok() : BadRequest("Book could not be found or is currently rented.");
         }
 
         [HttpGet("rentorreturn")]
@@ -82,29 +91,21 @@ namespace BookRental.Controllers
         {
             var book = _service.GetById(id);
 
-            if (_service.IsRented(id))
-            {
-                return PartialView("_ReturnBook", book);
-            }
-            else
-            {
-                return PartialView("_RentBook", book);
-
-            }
+            return PartialView(_service.IsRented(id) ? "_ReturnBook" : "_RentBook", book);
         }
 
         [HttpPost("rent")]
         public ActionResult Rent(RentOrReturnBookDto dto)
         {
-            if (ModelState.IsValid!)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _service.Rent(dto);
-            return Ok();
+
+            bool result = _service.Rent(dto);
+            return result ? Ok() : BadRequest("Client with this number could not be found.");
         }
-
-
+        
         [HttpPost("return")]
         public ActionResult Return(int id)
         {
