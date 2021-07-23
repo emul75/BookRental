@@ -25,13 +25,15 @@ namespace BookRental
             services.AddDbContext<BookRentalDbContext>();
             services.AddScoped<IBookRentalService, BookRentalService>();
             services.AddScoped<IClientService, ClientService>();
+            services.AddScoped<BookSeeder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BookRentalDbContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BookRentalDbContext context, BookSeeder seeder)
         {
             context.Database.Migrate();
-
+            seeder.Seed();
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
