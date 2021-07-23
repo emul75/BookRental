@@ -33,7 +33,7 @@ namespace BookRental.Controllers
         }
 
         [HttpGet("all")]
-        public ActionResult<IEnumerable<Book>> GetAll()
+        public ActionResult<IEnumerable<BookDto>> GetAll()
         {
             var books = _service.GetAll();
             return PartialView("_BookList", books);

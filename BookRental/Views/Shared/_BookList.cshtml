@@ -1,18 +1,17 @@
 @using BookRental.Entities
-@model IEnumerable<Book>;
+@model IEnumerable<BookDto>;
 
 <div>
     <button type="button" class="btn btn-primary btn-lg" onclick="loadAddBookView()">Add new book</button>
     <button type="button" class="btn btn-primary btn-lg" onclick="loadAddNewClientView()">Add new client</button>
-
 </div>
-
+<br>
 <div>
     <ul class="list-group">
         @foreach (var book in Model)
         {
             <li class="list-group-item">
-                <div>
+                <div class="float-left">
                     <div class="text-left">
                         Title: @book.Title
                     </div>
@@ -28,13 +27,33 @@
                     <div class="text-left">
                         Id: @book.Id
                     </div>
-                    <div class="btn">
-                        <button type="button" class="btn btn-primary" onclick="loadUpdateBookView(@book.Id)">Update</button>
-                        <button type="button" class="btn btn-primary" onclick="deleteBook(@book.Id)">Delete</button>
+                </div>
+                <div class="mx-auto" style="width: 300px;">
+                    <div class="text-left">
+                        Last client: @book.FirstName @book.LastName - @book.ContactNumber
                     </div>
-                    <button type="button" class="btn btn-info" onclick="loadRentOrReturnBookView(@book.Id)">Rent/Return</button>
+                    <div class="text-left">
+                        Rented: @book.Rented.ToString()
+                    </div>
+                    <div class="text-left">
+                        Returned: @book.Returned.ToString()
+                    </div>
+                </div>
+                <div class="btn float-right">
+                    <button type="button" class="btn btn-primary" onclick="loadUpdateBookView(@book.Id)">Update</button>
+                    <button type="button" class="btn btn-primary" onclick="deleteBook(@book.Id)">Delete</button>
+                    @if (book.Rented is not null && book.Returned is null)
+                    {
+                        <button type="button" class="btn btn-warning" style="width: 100px;" onclick="loadRentOrReturnBookView(@book.Id)">Return</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-success" style="width: 100px;" onclick="loadRentOrReturnBookView(@book.Id)">Rent</button>
+                    }
 
                 </div>
+
+
             </li>
         }
 

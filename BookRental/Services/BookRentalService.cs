@@ -4,13 +4,14 @@ using System.Globalization;
 using System.Linq;
 using BookRental.Entities;
 using BookRental.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookRental.Services
 {
     public interface IBookRentalService
     {
         Book GetById(int id);
-        IEnumerable<Book> GetAll();
+        IEnumerable<BookDto> GetAll();
         bool Add(AddBookDto dto);
         bool Update(UpdatedBookDto dto);
         bool Delete(int id);
@@ -34,10 +35,65 @@ namespace BookRental.Services
             return book;
         }
 
-        public IEnumerable<Book> GetAll()
+        public IEnumerable<BookDto> GetAll()
         {
             var books = _dbContext.Books.ToList();
-            return books;
+            var booksDto = new List<BookDto>();
+
+            foreach (Book book in books)
+            {
+                var rents = _dbContext.Rents.Where(r => r.BookId == book.Id).Include(r => r.Client);
+                var rent = new Rent();
+                if (rents.Any())
+                {
+                    rent = rents.OrderBy(r => r.Rented).Last();
+
+                    if (rent.Returned is null)
+                    {
+                        booksDto.Add(new BookDto()
+                        {
+                            Id = book.Id,
+                            Title = book.Title,
+                            Author = book.Author,
+                            Category = book.Category,
+                            Published = book.Published,
+                            FirstName = rent.Client.FirstName,
+                            LastName = rent.Client.LastName,
+                            ContactNumber = rent.Client.ContactNumber,
+                            Rented = rent.Rented,
+                        });
+                    }
+                    else
+                    {
+                        booksDto.Add(new BookDto()
+                        {
+                            Id = book.Id,
+                            Title = book.Title,
+                            Author = book.Author,
+                            Category = book.Category,
+                            Published = book.Published,
+                            FirstName = rent.Client.FirstName,
+                            LastName = rent.Client.LastName,
+                            ContactNumber = rent.Client.ContactNumber,
+                            Rented = rent.Rented,
+                            Returned = rent.Returned
+                        });
+                    }
+                }
+                else
+                {
+                    booksDto.Add(new BookDto()
+                    {
+                        Id = book.Id,
+                        Title = book.Title,
+                        Author = book.Author,
+                        Category = book.Category,
+                        Published = book.Published,
+                    });
+                }
+            }
+
+            return booksDto;
         }
 
         public bool Add(AddBookDto dto)
@@ -118,6 +174,7 @@ namespace BookRental.Services
             {
                 return false;
             }
+
             var rent = new Rent()
             {
                 Book = _dbContext.Books.First(b => b.Id == dto.Id),
