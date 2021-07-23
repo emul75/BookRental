@@ -1,4 +1,5 @@
 using BookRental.Entities;
+using BookRental.Middleware;
 using BookRental.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,10 +27,12 @@ namespace BookRental
             services.AddScoped<IBookRentalService, BookRentalService>();
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<BookSeeder>();
+            services.AddScoped<ErrorHandlingMiddleware>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BookRentalDbContext context, BookSeeder seeder)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BookRentalDbContext context,
+            BookSeeder seeder)
         {
             context.Database.Migrate();
             seeder.Seed();
@@ -44,6 +47,8 @@ namespace BookRental
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
