@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using BookRental.Entities;
+using BookRental.Exceptions;
 using BookRental.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,10 +13,10 @@ namespace BookRental.Services
     {
         Book GetById(int id);
         IEnumerable<BookDto> GetAll();
-        bool Add(AddBookDto dto);
-        bool Update(UpdatedBookDto dto);
-        bool Delete(int id);
-        bool Rent(RentOrReturnBookDto dto);
+      void Add(AddBookDto dto);
+        void Update(UpdatedBookDto dto);
+        void Delete(int id);
+        void Rent(RentOrReturnBookDto dto);
         void Return(int id);
         bool IsRented(int id);
     }
@@ -32,6 +33,10 @@ namespace BookRental.Services
         public Book GetById(int id)
         {
             var book = _dbContext.Books.FirstOrDefault(b => b.Id == id);
+            if (book is null)
+            {
+                throw  new NotFoundException("Book not found.");
+            }
             return book;
         }
 
@@ -96,7 +101,7 @@ namespace BookRental.Services
             return booksDto;
         }
 
-        public bool Add(AddBookDto dto)
+        public void Add(AddBookDto dto)
         {
             var newBook = new Book()
             {
@@ -110,21 +115,20 @@ namespace BookRental.Services
             }
             catch (Exception)
             {
-                return false;
+                throw new InvalidDateFormatException("Invalid date format.");
             }
 
 
             _dbContext.Books.Add(newBook);
             _dbContext.SaveChanges();
-            return true;
         }
 
-        public bool Update(UpdatedBookDto dto)
+        public void Update(UpdatedBookDto dto)
         {
             var book = _dbContext.Books.FirstOrDefault(b => b.Id == dto.Id);
             if (book is null)
             {
-                return false;
+                throw new NotFoundException("Book not found.");
             }
 
             if (dto.Title is not null)
@@ -141,38 +145,36 @@ namespace BookRental.Services
                 }
                 catch (Exception)
                 {
-                    return false;
+                    throw new InvalidDateFormatException("Invalid date format.");
                 }
             }
 
             _dbContext.SaveChanges();
-            return true;
         }
 
-        public bool Delete(int id)
+        public void Delete(int id)
         {
             var book = _dbContext.Books.FirstOrDefault(b => b.Id == id);
             if (book is null)
             {
-                return false;
+                throw new NotFoundException("Book not found.");
             }
 
             if (_dbContext.Rents.Any(r => r.Book.Id == id && r.Returned == null))
             {
-                return false;
+                throw new BookUnavailableException("Book is currently rented.");
             }
 
             _dbContext.Remove(book);
             _dbContext.SaveChanges();
-            return true;
         }
 
-        public bool Rent(RentOrReturnBookDto dto)
+        public void Rent(RentOrReturnBookDto dto)
         {
             var client = _dbContext.Clients.FirstOrDefault(c => c.ContactNumber == dto.ContactNumber);
             if (client is null)
             {
-                return false;
+                throw new NotFoundException("Client with this number not found.");
             }
 
             var rent = new Rent()
@@ -184,7 +186,6 @@ namespace BookRental.Services
             };
             _dbContext.Rents.Add(rent);
             _dbContext.SaveChanges();
-            return true;
         }
 
         public void Return(int id)

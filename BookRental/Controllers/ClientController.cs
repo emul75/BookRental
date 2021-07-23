@@ -13,7 +13,7 @@ namespace BookRental.Controllers
         private readonly ILogger<ClientController> _logger;
         private readonly IClientService _service;
 
-        public ClientController(ILogger<ClientController> logger,IClientService service)
+        public ClientController(ILogger<ClientController> logger, IClientService service)
         {
             _logger = logger;
             _service = service;
@@ -24,7 +24,7 @@ namespace BookRental.Controllers
         {
             return PartialView("_AddClient");
         }
-        
+
         [HttpPost("add")]
         public ActionResult Add(AddClientDto dto)
         {
@@ -32,11 +32,10 @@ namespace BookRental.Controllers
             {
                 return BadRequest(ModelState);
             }
-            bool result = _service.Add(dto);
 
-            return result ? Ok() : BadRequest("Client with this number already exist.");
+            _service.Add(dto);
+
+            return Ok();
         }
-
-
     }
 }

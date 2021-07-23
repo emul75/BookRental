@@ -24,11 +24,6 @@ namespace BookRental.Controllers
         public ActionResult<Book> GetById(int id)
         {
             var book = _service.GetById(id);
-            if (book is null)
-            {
-                return BadRequest("Book not found");
-            }
-
             return Ok(book);
         }
 
@@ -53,9 +48,9 @@ namespace BookRental.Controllers
                 return BadRequest(ModelState);
             }
 
-            bool result = _service.Add(dto);
+            _service.Add(dto);
 
-            return result ? Ok() : BadRequest("Invalid date format");
+            return Ok();
         }
 
         [HttpGet("update/{id:int}")]
@@ -73,17 +68,17 @@ namespace BookRental.Controllers
                 return BadRequest(ModelState);
             }
 
-            bool result = _service.Update(dto);
+            _service.Update(dto);
 
-            return result ? Ok() : BadRequest("Invalid date format");
+            return Ok();
         }
 
         [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
-            bool result = _service.Delete(id);
+            _service.Delete(id);
 
-            return result ? Ok() : BadRequest("Book could not be found or is currently rented.");
+            return Ok();
         }
 
         [HttpGet("rentorreturn")]
@@ -102,8 +97,8 @@ namespace BookRental.Controllers
                 return BadRequest(ModelState);
             }
 
-            bool result = _service.Rent(dto);
-            return result ? Ok() : BadRequest("Client with this number could not be found.");
+            _service.Rent(dto);
+            return Ok();
         }
         
         [HttpPost("return")]
