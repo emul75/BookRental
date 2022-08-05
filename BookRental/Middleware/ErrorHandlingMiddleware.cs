@@ -33,7 +33,7 @@ namespace BookRental.Middleware
                 context.Response.StatusCode = 405;
                 await context.Response.WriteAsync(e.Message);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 context.Response.StatusCode = 501;
                 await context.Response.WriteAsync("Unspecified server error");
