@@ -6,8 +6,8 @@ namespace BookRental.Entities
 
     {
         private string _connectionString =
-            "Server=(localdb)\\mssqllocaldb;Database=BookRentalDb;Trusted_Connection=True;";
-
+            "Data Source=.\\BookRental.db;";
+        
         public DbSet<Book> Books { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Rent> Rents { get; set; }
@@ -16,32 +16,26 @@ namespace BookRental.Entities
         {
             modelBuilder.Entity<Book>()
                 .Property(b => b.Title)
-                .IsRequired()
-                .HasMaxLength(30);
+                .IsRequired();
             modelBuilder.Entity<Book>()
                 .Property(b => b.Author)
-                .IsRequired()
-                .HasMaxLength(30);
+                .IsRequired();
             modelBuilder.Entity<Book>()
                 .Property(b => b.Category)
-                .IsRequired()
-                .HasMaxLength(20);
+                .IsRequired();
             modelBuilder.Entity<Book>()
                 .Property(b => b.Published)
                 .IsRequired();
 
             modelBuilder.Entity<Client>()
                 .Property(c => c.FirstName)
-                .IsRequired()
-                .HasMaxLength(10);
+                .IsRequired();
             modelBuilder.Entity<Client>()
                 .Property(c => c.LastName)
-                .IsRequired()
-                .HasMaxLength(10);
+                .IsRequired();
             modelBuilder.Entity<Client>()
                 .Property(c => c.ContactNumber)
-                .IsRequired()
-                .HasMaxLength(15);
+                .IsRequired();
 
             modelBuilder.Entity<Rent>()
                 .Property(c => c.ClientId)
@@ -53,7 +47,7 @@ namespace BookRental.Entities
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_connectionString);
+            optionsBuilder.UseSqlite(_connectionString);
         }
     }
 }
